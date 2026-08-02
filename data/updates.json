@@ -1,0 +1,38 @@
+{
+  "agosto-2026": [
+    {
+      "id": 1,
+      "title": "🎨 Rediseño del Sitio",
+      "description": "¡Nuevo diseño con modo noche, chat de comentarios mejorado y muchas más características! El sitio ahora se ve mucho mejor en móvil y es completamente modular.",
+      "category": "Sitio"
+    },
+    {
+      "id": 2,
+      "title": "📦 Modularización Completada",
+      "description": "El sitio ahora está completamente modularizado. Todos los datos en JSON, estilos separados y scripts independientes. Mucho más fácil de mantener.",
+      "category": "Desarrollo"
+    }
+  ],
+  "julio-2026": [
+    {
+      "id": 3,
+      "title": "🤖 Actualización de KAT Bot",
+      "description": "Se agregaron nuevas funciones de moderación y mejoras de rendimiento. El bot ahora responde 30% más rápido.",
+      "category": "Proyectos"
+    }
+  ],
+  "junio-2026": [
+    {
+      "id": 4,
+      "title": "📖 Avance en la Novela",
+      "description": "He completado los primeros 3 capítulos. La historia está tomando forma y estoy muy emocionado con el progreso.",
+      "category": "Proyectos"
+    },
+    {
+      "id": 5,
+      "title": "🎙️ Nueva Colaboración en Fandubs",
+      "description": "Nos unimos a un nuevo proyecto de fandubs. ¡Mantente atento para más anuncios!",
+      "category": "Proyectos"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "projects": [
+    {
+      "id": "kat",
+      "name": "KAT Bot",
+      "icon": "🤖",
+      "shortDescription": "Bot automatizado con IA para Stoat",
+      "dataFile": "data/project-kat.json"
+    },
+    {
+      "id": "novela",
+      "name": "Novela (En Desarrollo)",
+      "icon": "📖",
+      "shortDescription": "Mi segunda novela con derechos propios",
+      "dataFile": "data/project-novela.json"
+    },
+    {
+      "id": "fandubs",
+      "name": "Comunidad de Fandubs",
+      "icon": "🎙️",
+      "shortDescription": "Parte de una comunidad de fandubs creativa",
+      "dataFile": "data/project-fandubs.json"
+    }
+  ]
+}
