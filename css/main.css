@@ -147,7 +147,10 @@ nav {
   text-shadow: 
     4px 4px 0 var(--text-dark),
     8px 8px 0 rgba(0, 0, 0, 0.3);
-  color: var(--orange);
+  background: linear-gradient(135deg, var(--orange), var(--hot-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   animation: pixelGlow 3s ease-in-out infinite;
 }
 
@@ -1033,4 +1036,17 @@ footer p {
   .social-slide-panel {
     width: 90vw;
   }
+}
+/* ========== SCROLLBAR DEGRADADA ========== */
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--orange), var(--hot-pink));
+  border: 3px solid var(--text-dark);
 }
