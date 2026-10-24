@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Moderación · Copy's Place</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/css/theme.css">
+  <script>
+    (function () {
+      var t = null; try { t = localStorage.getItem("cp-theme"); } catch (e) {}
+      if (t !== "light" && t !== "dark") t = (window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <style>
+    body { margin: 0; padding: 24px 16px 64px; background: var(--surface); color: var(--on-surface); font: 400 1rem/1.5 var(--font-body); }
+    main { width: min(720px, 100%); margin: 0 auto; }
+    h1 { font: 700 1.5rem/1.2 var(--font-display); margin: 0 0 4px; }
+    .muted { color: var(--on-surface-variant); margin: 0 0 20px; }
+    form { display: flex; gap: 8px; margin-bottom: 20px; }
+    input { flex: 1; min-width: 0; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--outline); background: var(--surface-container); color: inherit; font: inherit; }
+    button { padding: 10px 18px; border: 0; border-radius: 999px; font: 500 .9rem var(--font-body); cursor: pointer; background: var(--primary); color: var(--on-primary); }
+    button.t { background: var(--surface-container-highest); color: var(--on-surface); }
+    button.d { background: var(--error, #b3261e); color: #fff; }
+    .msg { background: var(--surface-container); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; }
+    .msg.pending { outline: 2px solid var(--primary); }
+    .msg b { font-weight: 600; } .msg time { color: var(--on-surface-variant); font-size: .8rem; margin-left: 8px; }
+    .msg p { margin: 6px 0 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+    #status { min-height: 1.5em; color: var(--on-surface-variant); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Moderación del buzón</h1>
+    <p class="muted">Los mensajes nuevos aparecen resaltados. Solo los aprobados se ven en la página.</p>
+    <form id="login">
+      <input id="tok" type="password" placeholder="Contraseña (ADMIN_TOKEN)" autocomplete="current-password" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <p id="status" role="status"></p>
+    <div id="list"></div>
+  </main>
+  <script>
+    (function () {
+      var tok = sessionStorage.getItem("cp-admin") || "", $ = function (s) { return document.querySelector(s); };
+      function api(method, body) {
+        return fetch("/api/admin/guestbook", {
+          method: method, headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" },
+          body: body ? JSON.stringify(body) : undefined
+        }).then(function (r) { return r.json().then(function (d) { d.status = r.status; return d; }); });
+      }
+      function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+      function btn(label, cls, fn) { var b = el("button", cls, label); b.type = "button"; b.onclick = fn; return b; }
+      function render(items) {
+        var box = $("#list"); box.textContent = "";
+        if (!items.length) { box.appendChild(el("p", "muted", "No hay mensajes todavía.")); return; }
+        items.forEach(function (m) {
+          var c = el("div", "msg" + (m.approved ? "" : " pending"));
+          var head = el("div"); head.appendChild(el("b", "", m.name)); head.appendChild(el("time", "", new Date(m.created_at).toLocaleString("es") + (m.approved ? " · publicado" : " · pendiente")));
+          c.append(head, el("p", "", m.message));
+          var a = el("div", "acts");
+          function act(action) { return function () { api("POST", { id: m.id, action: action }).then(load); }; }
+          if (!m.approved) a.appendChild(btn("Aprobar", "", act("approve"))); else a.appendChild(btn("Ocultar", "t", act("hide")));
+          a.appendChild(btn("Borrar", "d", function () { if (confirm("¿Borrar este mensaje para siempre?")) act("delete")(); }));
+          c.appendChild(a); box.appendChild(c);
+        });
+      }
+      function load() {
+        $("#status").textContent = "Cargando…";
+        api("GET").then(function (d) {
+          if (d.status === 401) { $("#status").textContent = "Contraseña incorrecta."; sessionStorage.removeItem("cp-admin"); return; }
+          if (d.status === 503) { $("#status").textContent = "El panel no está activado: falta el secreto ADMIN_TOKEN o la base de datos (ver README)."; return; }
+          $("#status").textContent = ""; $("#login").hidden = true; render(d.items || []);
+        }).catch(function () { $("#status").textContent = "No se pudo conectar con el servidor."; });
+      }
+      $("#login").addEventListener("submit", function (e) { e.preventDefault(); tok = $("#tok").value; sessionStorage.setItem("cp-admin", tok); load(); });
+      if (tok) load();
+    })();
+  </script>
+</body>
+</html>

@@ -1,205 +1,117 @@
-# 🐱 Manual de Copy's Place
+# 🐱 Copy's Place
 
-Guía rápida para actualizar tu sitio sin tener que tocar HTML ni CSS.
-Casi todo el contenido vive en archivos `.json` dentro de la carpeta `data/` —
-edita el texto, guarda, sube el archivo a Neocities y listo.
+Sitio personal (HTML + CSS + JS, sin dependencias ni paso de compilación) alojado en **Cloudflare Pages**, con unas pocas funciones de servidor (buzón y caricias de la mascota).
+Tiene dos versiones del mismo sitio: **moderna** (Material Design) y **clásica** (pixel art naranja/violeta de 2025, cuando la página nació en Neocities), ambas con modo claro y oscuro.
 
-> ⚠️ **Regla de oro con los JSON:** son muy sensibles a la sintaxis.
-> - Todo texto va entre comillas dobles `" "` (no comillas simples).
-> - Cada elemento de una lista lleva una coma `,` al final, **excepto el último**.
-> - Si algo deja de funcionar después de editar un JSON, casi siempre es una coma de más, de menos, o una comilla que falta.
-> - Puedes pegar el contenido en [jsonlint.com](https://jsonlint.com/) para revisar que esté bien escrito antes de subirlo.
-
----
-
-## 📁 ¿Dónde está cada cosa?
+## Estructura
 
 ```
-copys-place/
-├── index.html              → Página de inicio
-├── proyectos.html           galeria.html           acerca.html
-├── actualizaciones.html     colaboraciones.html     contacto.html
-├── recursos.html            timeline.html
-│
-├── data/                   ← 🌟 AQUÍ EDITAS CASI TODO
-│   ├── bio.json             (tu info personal + redes sociales)
-│   ├── site-intro.json      (la intro que aparece en el inicio)
-│   ├── updates.json         (novedades / actualizaciones)
-│   ├── projects.json        (lista de proyectos)
-│   ├── project-*.json       (detalle de cada proyecto)
-│   ├── galeria.json         (imágenes de la galería)
-│   └── menu.json            (enlaces del menú ☰)
-│
-├── assets/
-│   ├── fondo.gif            (fondo del sitio)
-│   └── gallery/             ← sube aquí las imágenes de la galería
-│
-├── css/                    (estilos — no hace falta tocarlos)
-├── js/                     (funcionalidad — no hace falta tocarla)
-└── partials/                (header/footer/menú compartidos — no tocar)
+public/                  ← lo que se publica
+  index.html             ← cascarón de la página (no suele tocarse)
+  404.html · links.html · admin.html
+  _headers · _redirects  ← seguridad, caché y enlaces cortos de Cloudflare
+  manifest.webmanifest · sw.js · robots.txt
+  data/calendar.js       ← fechas y textos de las temporadas (se carga en el <head>)
+  data/content.js        ← ★ AQUÍ EDITAS TODO: secciones, textos, novedades, redes, libros, avances...
+  css/                   ← theme (colores), style (componentes), classic (pixel art), seasons, palettes (paletas Material), pet, hero (inicio y gato), dock
+  js/                    ← core, cat, hero, dock, carousel, sections, library, boot, guestbook, skin, seasons, pet, extras
+  assets/                ← fuentes, iconos, fondos pixel art; tú creas books/, gallery/, avances/
+functions/               ← Pages Functions (servidor): api/guestbook, api/pet, api/admin/guestbook
+schema.sql               ← tablas de la base de datos D1
+wrangler.toml            ← configuración de Cloudflare
+.github/workflows/ci.yml ← revisa los scripts en cada push
+CHANGELOG.md             ← historial de cambios
 ```
 
----
+## Añadir cosas
 
-## 📰 Publicar una novedad / actualización
+Todo en `public/data/content.js`:
 
-Edita **`data/updates.json`**. La entrada que pongas primero en el mes más reciente
-es la que aparece destacada en el inicio.
+| Quiero… | Qué hago |
+|---|---|
+| Una novedad | Añado un objeto arriba del mes actual en `updates` (o creo el mes) |
+| Un avance suelto | Añado un objeto arriba en `feed` |
+| Un proyecto | Añado un objeto en `projects` |
+| Un libro en PDF | Subo el PDF a `public/assets/books/` y añado un objeto en `books` con `file` |
+| Una imagen | La subo a `public/assets/gallery/` y añado `{ src, alt, caption }` en `gallery` |
+| **Una sección nueva** | Añado un bloque en `sections` (ver el comentario al inicio de `content.js`). El menú se actualiza solo |
 
-```json
-{
-  "agosto-2026": [
-    {
-      "id": 6,
-      "title": "🎉 Nueva actualización",
-      "description": "Aquí describes qué cambió o qué hiciste.",
-      "category": "Sitio"
-    }
-  ],
-  "julio-2026": [
-    ...
-  ]
-}
+Tipos de sección: `updates`, `feed`, `projects`, `books`, `gallery`, `about`, `mailbox`, `cards`.
+¿Necesitas algo distinto? Crea un tipo con `CP.registerType("mi-tipo", function (sec, body) { ... })` en un script nuevo.
+
+## Versión clásica (easter egg)
+
+Se descubre con el código Konami (↑ ↑ ↓ ↓ ← → ← → B A), con 5 toques rápidos al gato grande del inicio, o añadiendo `?classic` a la dirección. Al descubrirla aparece un switch en el pie de página (se recuerda en el navegador).
+Si prefieres que el switch se vea siempre, pon `classic: { secret: false }` en `content.js`.
+
+## Temporadas (solo versión moderna)
+
+| Temporada | Cuándo |
+|---|---|
+| 🎂 Cumpleaños | 29 de octubre (tiene prioridad) |
+| 🎃 Halloween | todo octubre |
+| 🕯 Recuerdo | 30 de agosto (día tranquilo: paleta apagada, luciérnagas, sin confeti; la mascota duerme) |
+| 🎄 Navidad | noviembre y diciembre |
+| 💘 San Valentín | todo febrero |
+| 🏳️‍🌈 Orgullo | todo junio |
+| ✨ Año Nuevo | del 1 al 7 de enero |
+| 👑 Día del Gato | 8 de agosto |
+
+- Se decide por la **fecha local del visitante**, antes de pintar la página (`public/data/calendar.js`).
+- Cada una cambia la paleta, pone un gorrito al gato y añade efectos (murciélagos, nieve y lucecitas, globos y confeti) y un aviso.
+- La versión clásica nunca se disfraza.
+- Quien visita puede apagarla con el interruptor del pie de página (se recuerda en su navegador).
+- Para probar: `?season=` con `halloween`, `birthday`, `xmas`, `valentine`, `pride`, `newyear`, `catday` o `none`.
+- Para añadir otra: regla en `seasons` y textos en `copy` de `public/data/calendar.js`, paleta en `public/css/seasons.css` y efectos en `public/js/seasons.js`.
+- Para cambiar fechas o textos, edita `public/data/calendar.js`.
+
+## Mascota
+
+Un gatito pasea por el borde inferior: se sienta, camina, mira al cursor y se duerme. Clic o toque = caricia; arrastrarlo = cogerlo (al soltarlo cae y rebota). Se guarda el número de caricias en el navegador. Se apaga con el interruptor "Mascota" del pie de página. Desde otro script puedes usar `CP.pet.say("Hola")`.
+
+## Publicar en Cloudflare Pages
+
+1. En el panel de Cloudflare: **Workers & Pages → Create → Pages → Connect to Git** y elige este repositorio.
+2. Configuración de compilación: **sin comando de compilación** y **directorio de salida: `public`**.
+3. Cada push a `main` se publica solo, y cada rama o pull request genera una vista previa con su propia dirección.
+4. Dominio propio (opcional): **Custom domains** dentro del proyecto. Con dominio propio conviene añadir `og:url`/`canonical` en `index.html` y un `sitemap.xml`.
+
+Para probarlo en local sin las funciones: `cd public && python3 -m http.server` y abre `http://localhost:8000` (el buzón funciona en modo local). Con las funciones y la base de datos: `npx wrangler pages dev public`.
+
+## Buzón real y caricias globales (funciones + D1)
+
+Una sola vez:
+
+```
+npx wrangler d1 create copys-place                                  # copia el database_id en wrangler.toml
+npx wrangler d1 execute copys-place --remote --file=schema.sql      # crea las tablas
 ```
 
-**Para agregar una nueva:**
-1. Si el mes actual ya existe (ej. `"agosto-2026"`), agrega tu entrada **al principio** de esa lista (así queda como la más reciente).
-2. Si es un mes nuevo, crea un bloque nuevo arriba de todo, con el nombre en minúsculas y sin tildes: `"septiembre-2026"`.
-3. `id` solo tiene que ser un número que no repitas.
-4. `category` es libre (Sitio, Proyectos, Desarrollo, etc.), es solo una etiqueta visual.
+Luego, en el proyecto de Pages: **Settings → Bindings → D1** → variable `DB` apuntando a la base `copys-place` (producción y vista previa). En **Settings → Variables and Secrets** crea:
 
----
+| Nombre | Para qué | Obligatorio |
+|---|---|---|
+| `ADMIN_TOKEN` | contraseña del panel `/admin` | sí, para moderar |
+| `TURNSTILE_SECRET` | clave secreta de Cloudflare Turnstile (anti-spam) | no |
+| `HASH_SALT` | texto cualquiera para anonimizar las IP | no |
+| `AUTO_APPROVE` = `1` | publicar los mensajes sin revisarlos | no |
 
-## 📁 Agregar un proyecto nuevo
+- **Moderar:** entra a `/admin`, escribe tu `ADMIN_TOKEN` y aprueba, oculta o borra. Los mensajes nuevos quedan pendientes hasta que los apruebes.
+- **Turnstile:** crea un widget en Cloudflare (Turnstile), pon la clave pública en `guestbook.turnstileSiteKey` de `content.js` y la secreta en `TURNSTILE_SECRET`.
+- **Privacidad:** no se guarda la IP, solo una huella anónima para limitar el spam (un mensaje cada 30 s por persona).
+- **Si algo falla** (sin base de datos, en local…), el buzón vuelve solo al modo local y la mascota simplemente no cuenta las caricias globales.
 
-Dos pasos:
+## Enlaces cortos, redes e instalación
 
-**1.** Crea un archivo nuevo `data/project-nombre.json` (copia uno existente como plantilla, ej. `project-kat.json`):
+- `public/_redirects`: `/discord`, `/github`, `/youtube`, `/tiktok`, `/instagram`, `/facebook`, `/x`, `/steam` y `/redes`.
+- `/links`: página con todas las redes (sale de `social` en `content.js`, así que se actualiza sola).
+- La página se puede **instalar** como app (manifest + service worker) y abre sin conexión con lo último que viste. Para desactivar el service worker al probar, añade `?nosw`.
+- Analítica sin cookies: activa **Web Analytics** en Cloudflare y, si quieres, pon el token en `analyticsToken` de `content.js`.
 
-```json
-{
-  "id": "nombre",
-  "title": "🎨 Nombre del Proyecto",
-  "description": "Descripción corta.",
-  "longDescription": "Descripción más larga para el detalle.",
-  "tags": ["Tag1", "Tag2"],
-  "images": [],
-  "status": "Activo",
-  "lastUpdated": "Agosto 2026",
-  "links": {
-    "github": "https://..."
-  }
-}
-```
+## Seguridad y caché
 
-**2.** Agrégalo a la lista en `data/projects.json`:
+`public/_headers` define una política de seguridad de contenido (CSP), `nosniff`, `Referrer-Policy`, etc. Si algún día añades un servicio externo (por ejemplo, otro script o iframe), tendrás que permitirlo ahí. El código se revalida siempre y las fuentes se guardan un año.
 
-```json
-{
-  "id": "nombre",
-  "name": "Nombre del Proyecto",
-  "icon": "🎨",
-  "shortDescription": "Descripción corta.",
-  "dataFile": "data/project-nombre.json"
-}
-```
+## Lector de PDF
 
-El `id` y el `dataFile` deben coincidir con el archivo que creaste en el paso 1.
-
----
-
-## 📸 Subir imágenes a la galería
-
-**1.** Sube el archivo de imagen a la carpeta `assets/gallery/` en Neocities
-(usa el botón de subir archivos de tu panel de Neocities, dentro de esa carpeta).
-
-**2.** Agrega una entrada en `data/galeria.json`:
-
-```json
-{
-  "images": [
-    {
-      "src": "assets/gallery/mi-dibujo.png",
-      "caption": "Un dibujito que hice"
-    }
-  ]
-}
-```
-
-- `src` es la ruta al archivo que subiste (respeta mayúsculas/minúsculas exactas).
-- `caption` es opcional — si no quieres texto debajo de la imagen, pon `""`.
-- Cada imagen nueva es un bloque `{ ... }` más en la lista, separado por coma.
-
----
-
-## 🐾 Editar "Acerca de Mí"
-
-Edita **`data/bio.json`**:
-- `name`, `alias`: tu nombre/alias.
-- `longBio`: tu biografía larga. El primer párrafo va antes de un salto de línea (`\n`), el segundo después.
-- `skills`: lista de habilidades, aparecen como tarjetitas.
-- `socialMedia`: tus redes — también alimenta el ☰ menú y el footer de todas las páginas.
-
----
-
-## 🏠 Editar la introducción del inicio
-
-Edita **`data/site-intro.json`** — es el texto sobre "qué es Copy's Place" que aparece
-debajo del título en la página principal:
-
-```json
-{
-  "title": "¿Qué es Copy's Place?",
-  "text": "Tu texto aquí."
-}
-```
-
----
-
-## 🧭 Editar el menú ☰
-
-Edita **`data/menu.json`** para agregar, quitar o reordenar los enlaces del menú.
-Cada elemento necesita apuntar a un archivo `.html` real que exista en el sitio:
-
-```json
-{ "label": "Nombre en el menú", "url": "archivo.html", "icon": "🐱" }
-```
-
----
-
-## 🎨 Cambiar colores del tema
-
-En **`css/theme.css`** están todas las variables de color, tanto para modo claro (`:root`)
-como para modo oscuro (`body.dark-mode`). Por ejemplo, para hacer el rosa más intenso:
-
-```css
---hot-pink: #ff1493;   /* cambia este valor por el tono que quieras */
-```
-
-No hace falta tocar nada más — todo el sitio usa estas variables, así que un cambio aquí
-se aplica en todas las páginas automáticamente.
-
----
-
-## 🚀 Cómo subir los cambios a Neocities
-
-1. Entra a tu panel de Neocities → **"Edit code"** o el gestor de archivos.
-2. Ubica el archivo que editaste (por ejemplo `data/updates.json`).
-3. Ábrelo, pega el contenido nuevo, guarda.
-4. Si es un archivo *nuevo* (como una imagen o un `project-nuevo.json`), asegúrate de subirlo
-   **dentro de la carpeta correcta** (`data/`, `assets/gallery/`, etc.) para que las rutas coincidan.
-5. Refresca tu sitio en el navegador (a veces con `Ctrl + Shift + R` para forzar que cargue todo de nuevo).
-
----
-
-## 🆘 Algo se rompió, ¿ahora qué?
-
-- **Una sección no carga / aparece vacía:** abre la consola del navegador (`F12` → pestaña "Console")
-  y busca errores en rojo. Casi siempre dicen qué archivo JSON está mal.
-- **Edité un JSON y todo desapareció:** revisa comas y comillas con [jsonlint.com](https://jsonlint.com/).
-- **Subí una imagen y no aparece:** revisa que la ruta en `src` sea exactamente igual
-  (mayúsculas, espacios, extensión `.png`/`.jpg`/`.gif`) a donde la subiste.
-- **El menú ☰ no muestra la página nueva:** falta agregarla a `data/menu.json`.
-
-¡Eso es todo! El sistema está pensado para que casi nunca tengas que tocar HTML, CSS o JS —
-solo los archivos dentro de `data/` y tus imágenes en `assets/`. 🐱✨
+En escritorio se abre dentro de la página. En móvil el PDF incrustado funciona mal, así que se abre en una pestaña nueva.

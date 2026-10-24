@@ -1,0 +1,444 @@
+/* ==========================================================
+   Copy's Place — TEMPORADAS (solo versión moderna)
+   🎃 halloween (octubre) · 🎂 birthday (29 oct) · 🎄 xmas (nov–dic)
+   Se activan con <html data-season="..."> (ver data/calendar.js).
+   La versión clásica (data-skin="classic") nunca las usa.
+   ========================================================== */
+
+/* ---------- Paletas: sustituyen los colores de theme.css ---------- */
+
+/* 🎃 Halloween — oscuro: noche morada, calabaza y verde viscoso */
+html[data-season="halloween"][data-theme="dark"]:not([data-skin="classic"]) {
+  --surface: #140c1c; --on-surface: #f3e6ff; --on-surface-variant: #cdb8e6;
+  --surface-container-lowest: #0e0815; --surface-container-low: #1b1126; --surface-container: #21152e;
+  --surface-container-high: #2b1c3b; --surface-container-highest: #362449;
+  --primary: #ff9f43; --on-primary: #2b1200; --primary-container: #5b2a86; --on-primary-container: #f0dcff;
+  --secondary: #b98cff; --on-secondary: #2a0f55; --secondary-container: #43286b; --on-secondary-container: #ecdcff;
+  --tertiary: #8bd450; --on-tertiary: #11300a; --tertiary-container: #2e4a14; --on-tertiary-container: #cdf5a4;
+  --outline: #9a86b3; --outline-variant: #463357;
+  --hat-a: #4a2480; --hat-b: #ff9f43; --hat-c: #ffd27a;
+  --bat: #b98cff; --web: #9a86b3;
+}
+/* 🎃 Halloween — claro: pergamino con tinta morada */
+html[data-season="halloween"][data-theme="light"]:not([data-skin="classic"]) {
+  --surface: #fff4e5; --on-surface: #2a1740; --on-surface-variant: #5b4571;
+  --surface-container-lowest: #ffffff; --surface-container-low: #fff0dc; --surface-container: #ffe6c9;
+  --surface-container-high: #f7dcc0; --surface-container-highest: #efd2b6;
+  --primary: #b34700; --on-primary: #ffffff; --primary-container: #ead6ff; --on-primary-container: #2a1740;
+  --secondary: #6a3ab0; --on-secondary: #ffffff; --secondary-container: #e0cdf7; --on-secondary-container: #2a1740;
+  --tertiary: #3d6b00; --on-tertiary: #ffffff; --tertiary-container: #d3f0a8; --on-tertiary-container: #112000;
+  --outline: #8a7599; --outline-variant: #d9c6e0;
+  --hat-a: #4a2480; --hat-b: #ff9f43; --hat-c: #ffd27a;
+  --bat: #3a1d5c; --web: #8a7599;
+}
+
+/* 🎄 Navidad — oscuro: bosque nocturno, rojo y dorado */
+html[data-season="xmas"][data-theme="dark"]:not([data-skin="classic"]) {
+  --surface: #0d1a14; --on-surface: #e8f4ec; --on-surface-variant: #b9d3c4;
+  --surface-container-lowest: #08120d; --surface-container-low: #12231b; --surface-container: #172b21;
+  --surface-container-high: #20372b; --surface-container-highest: #2a4437;
+  --primary: #ff7b7b; --on-primary: #3a0004; --primary-container: #7a1620; --on-primary-container: #ffdad8;
+  --secondary: #f5c96b; --on-secondary: #3a2a00; --secondary-container: #5a4413; --on-secondary-container: #ffe9b3;
+  --tertiary: #7fd6a0; --on-tertiary: #00391d; --tertiary-container: #1d5a38; --on-tertiary-container: #a9f2c2;
+  --outline: #86a595; --outline-variant: #35503f;
+  --hat-a: #d62839; --hat-b: #ffffff; --hat-c: #ffffff;
+  --snow: #ffffff; --snow-cap: #eef6f2;
+}
+/* 🎄 Navidad — claro: nieve con rojo y verde */
+html[data-season="xmas"][data-theme="light"]:not([data-skin="classic"]) {
+  --surface: #f7fbf8; --on-surface: #12261b; --on-surface-variant: #41584a;
+  --surface-container-lowest: #ffffff; --surface-container-low: #eef6f0; --surface-container: #e4f0e8;
+  --surface-container-high: #d9e9df; --surface-container-highest: #cde0d4;
+  --primary: #b3202a; --on-primary: #ffffff; --primary-container: #ffdad8; --on-primary-container: #410004;
+  --secondary: #8a6a00; --on-secondary: #ffffff; --secondary-container: #ffeaa6; --on-secondary-container: #2a2000;
+  --tertiary: #1f6b3f; --on-tertiary: #ffffff; --tertiary-container: #b9f0cd; --on-tertiary-container: #00210f;
+  --outline: #6f857a; --outline-variant: #bfd1c6;
+  --hat-a: #d62839; --hat-b: #ffffff; --hat-c: #ffffff;
+  --snow: #a9cfe3; --snow-cap: #ffffff;
+}
+
+/* 🎂 Cumpleaños — oscuro: noche de fiesta, rosa, oro y turquesa */
+html[data-season="birthday"][data-theme="dark"]:not([data-skin="classic"]),
+html[data-season="anniversary"][data-theme="dark"]:not([data-skin="classic"]) {
+  --surface: #171029; --on-surface: #f4eaff; --on-surface-variant: #cfc0e6;
+  --surface-container-lowest: #100a1e; --surface-container-low: #1e1534; --surface-container: #261b40;
+  --surface-container-high: #31234f; --surface-container-highest: #3d2d5f;
+  --primary: #ff5fa8; --on-primary: #3f0022; --primary-container: #7a1b52; --on-primary-container: #ffd8ea;
+  --secondary: #ffd24a; --on-secondary: #3b2e00; --secondary-container: #5c4a00; --on-secondary-container: #ffeaa3;
+  --tertiary: #4fe0cf; --on-tertiary: #00201c; --tertiary-container: #00504a; --on-tertiary-container: #9ff3e8;
+  --outline: #9a89b8; --outline-variant: #483a63;
+  --hat-a: #ff5fa8; --hat-b: #ffd24a; --hat-c: #4fe0cf;
+}
+/* 🎂 Cumpleaños — claro: crema con rosa */
+html[data-season="birthday"][data-theme="light"]:not([data-skin="classic"]),
+html[data-season="anniversary"][data-theme="light"]:not([data-skin="classic"]) {
+  --surface: #fff7f2; --on-surface: #2a1230; --on-surface-variant: #5d4466;
+  --surface-container-lowest: #ffffff; --surface-container-low: #fff0f4; --surface-container: #ffe5ee;
+  --surface-container-high: #fbd9e6; --surface-container-highest: #f4cddd;
+  --primary: #b0125f; --on-primary: #ffffff; --primary-container: #ffd8ea; --on-primary-container: #3f0022;
+  --secondary: #7a5a00; --on-secondary: #ffffff; --secondary-container: #ffe38a; --on-secondary-container: #261a00;
+  --tertiary: #006a62; --on-tertiary: #ffffff; --tertiary-container: #a6f2e8; --on-tertiary-container: #00201c;
+  --outline: #88708f; --outline-variant: #dcc3d3;
+  --hat-a: #ff5fa8; --hat-b: #ffd24a; --hat-c: #4fe0cf;
+}
+
+/* 💘 San Valentín — oscuro: vino y rosa */
+html[data-season="valentine"][data-theme="dark"]:not([data-skin="classic"]) {
+  --surface: #1c0e16; --on-surface: #ffe8f0; --on-surface-variant: #e3bccb;
+  --surface-container-lowest: #14080f; --surface-container-low: #25121d; --surface-container: #2d1724;
+  --surface-container-high: #3a1f2f; --surface-container-highest: #482839;
+  --primary: #ff6b9a; --on-primary: #44001f; --primary-container: #7d1d44; --on-primary-container: #ffd9e5;
+  --secondary: #ffb3c6; --on-secondary: #46101f; --secondary-container: #5c2036; --on-secondary-container: #ffd9e2;
+  --tertiary: #ffc58a; --on-tertiary: #442300; --tertiary-container: #5e3a12; --on-tertiary-container: #ffddb8;
+  --outline: #b08e9d; --outline-variant: #55384a;
+  --hat-a: #ff4d79; --hat-b: #ffd1dc; --hat-c: #ffffff;
+}
+/* 💘 San Valentín — claro: algodón de azúcar */
+html[data-season="valentine"][data-theme="light"]:not([data-skin="classic"]) {
+  --surface: #fff5f8; --on-surface: #2d111d; --on-surface-variant: #644452;
+  --surface-container-lowest: #ffffff; --surface-container-low: #ffeef3; --surface-container: #ffe3ec;
+  --surface-container-high: #fbd6e3; --surface-container-highest: #f4cad8;
+  --primary: #c2185b; --on-primary: #ffffff; --primary-container: #ffd9e5; --on-primary-container: #3e001a;
+  --secondary: #a3314f; --on-secondary: #ffffff; --secondary-container: #ffd9e0; --on-secondary-container: #3a0716;
+  --tertiary: #8a4b00; --on-tertiary: #ffffff; --tertiary-container: #ffdcb8; --on-tertiary-container: #2d1600;
+  --outline: #8f6f7c; --outline-variant: #e1c4cf;
+  --hat-a: #ff4d79; --hat-b: #ff9fb8; --hat-c: #ffffff;
+}
+
+/* 🏳️‍🌈 Orgullo — oscuro: noche con acentos de arcoíris */
+html[data-season="pride"][data-theme="dark"]:not([data-skin="classic"]) {
+  --surface: #120f1c; --on-surface: #f2edff; --on-surface-variant: #c8bfe0;
+  --surface-container-lowest: #0c0914; --surface-container-low: #181426; --surface-container: #1f1a30;
+  --surface-container-high: #292340; --surface-container-highest: #342d4f;
+  --primary: #ff7aa8; --on-primary: #4a0024; --primary-container: #6e1f45; --on-primary-container: #ffd9e6;
+  --secondary: #6fcfff; --on-secondary: #002b3d; --secondary-container: #0f4157; --on-secondary-container: #c8ecff;
+  --tertiary: #ffd84d; --on-tertiary: #3a2f00; --tertiary-container: #574400; --on-tertiary-container: #ffeea0;
+  --outline: #968bb4; --outline-variant: #403756;
+}
+/* 🏳️‍🌈 Orgullo — claro */
+html[data-season="pride"][data-theme="light"]:not([data-skin="classic"]) {
+  --surface: #fbf8ff; --on-surface: #1e1530; --on-surface-variant: #554a6b;
+  --surface-container-lowest: #ffffff; --surface-container-low: #f5f0ff; --surface-container: #ede6fb;
+  --surface-container-high: #e5ddf6; --surface-container-highest: #dcd3ef;
+  --primary: #b4235a; --on-primary: #ffffff; --primary-container: #ffd9e6; --on-primary-container: #3e001b;
+  --secondary: #006a94; --on-secondary: #ffffff; --secondary-container: #c8ecff; --on-secondary-container: #001e2e;
+  --tertiary: #7a5a00; --on-tertiary: #ffffff; --tertiary-container: #ffeaa6; --on-tertiary-container: #261900;
+  --outline: #7f7494; --outline-variant: #d3c9e6;
+}
+
+/* ✨ Año Nuevo — oscuro: medianoche y oro */
+html[data-season="newyear"][data-theme="dark"]:not([data-skin="classic"]),
+html[data-season="launch"][data-theme="dark"]:not([data-skin="classic"]) {
+  --surface: #0a0f1f; --on-surface: #eef2ff; --on-surface-variant: #b9c3e0;
+  --surface-container-lowest: #060a16; --surface-container-low: #101730; --surface-container: #151e3a;
+  --surface-container-high: #1d2848; --surface-container-highest: #273458;
+  --primary: #ffd24a; --on-primary: #3a2c00; --primary-container: #5c4700; --on-primary-container: #ffeaa3;
+  --secondary: #9ec1ff; --on-secondary: #00265a; --secondary-container: #1f3b70; --on-secondary-container: #d6e4ff;
+  --tertiary: #c9a7ff; --on-tertiary: #2c0d5c; --tertiary-container: #46267f; --on-tertiary-container: #ecdcff;
+  --outline: #8a97b8; --outline-variant: #303c5c;
+  --hat-a: #1b2340; --hat-b: #ffd24a; --hat-c: #ffffff;
+}
+/* ✨ Año Nuevo — claro: champán */
+html[data-season="newyear"][data-theme="light"]:not([data-skin="classic"]),
+html[data-season="launch"][data-theme="light"]:not([data-skin="classic"]) {
+  --surface: #fffaf0; --on-surface: #151b33; --on-surface-variant: #494f6b;
+  --surface-container-lowest: #ffffff; --surface-container-low: #fff4dc; --surface-container: #fbeccb;
+  --surface-container-high: #f4e2bb; --surface-container-highest: #ecd8ae;
+  --primary: #8a6200; --on-primary: #ffffff; --primary-container: #ffe9a8; --on-primary-container: #2a1d00;
+  --secondary: #2f4f9a; --on-secondary: #ffffff; --secondary-container: #d9e4ff; --on-secondary-container: #001a43;
+  --tertiary: #6a3fb0; --on-tertiary: #ffffff; --tertiary-container: #ecdcff; --on-tertiary-container: #24005a;
+  --outline: #82799a; --outline-variant: #e0d5b8;
+  --hat-a: #1b2340; --hat-b: #e2a800; --hat-c: #ffffff;
+}
+
+/* 👑 Día del Gato — oscuro: anaranjado y menta */
+html[data-season="catday"][data-theme="dark"]:not([data-skin="classic"]) {
+  --surface: #17110c; --on-surface: #fff0e0; --on-surface-variant: #dcc4a9;
+  --surface-container-lowest: #100b07; --surface-container-low: #1f1710; --surface-container: #271d14;
+  --surface-container-high: #33261a; --surface-container-highest: #403021;
+  --primary: #ffa24c; --on-primary: #3b1d00; --primary-container: #6a3a0a; --on-primary-container: #ffddbb;
+  --secondary: #6fdccf; --on-secondary: #00201c; --secondary-container: #0b4d46; --on-secondary-container: #b5f4ea;
+  --tertiary: #ffd27a; --on-tertiary: #3b2b00; --tertiary-container: #5a4300; --on-tertiary-container: #ffeaba;
+  --outline: #a58d74; --outline-variant: #4d3a29;
+  --hat-a: #e8503a; --hat-b: #ffc933; --hat-c: #4fd1c5;
+  --bat: #ffa24c;
+}
+/* 👑 Día del Gato — claro: crema */
+html[data-season="catday"][data-theme="light"]:not([data-skin="classic"]) {
+  --surface: #fff8ef; --on-surface: #2a1a0b; --on-surface-variant: #5d4733;
+  --surface-container-lowest: #ffffff; --surface-container-low: #fff1de; --surface-container: #ffe7c9;
+  --surface-container-high: #f8dcb9; --surface-container-highest: #f0d1ab;
+  --primary: #b45300; --on-primary: #ffffff; --primary-container: #ffdcbd; --on-primary-container: #2f1400;
+  --secondary: #00695f; --on-secondary: #ffffff; --secondary-container: #b5f4ea; --on-secondary-container: #00201c;
+  --tertiary: #7a5a00; --on-tertiary: #ffffff; --tertiary-container: #ffe38a; --on-tertiary-container: #261a00;
+  --outline: #8a7560; --outline-variant: #e2cdb3;
+  --hat-a: #e8503a; --hat-b: #f2b400; --hat-c: #1fa99c;
+  --bat: #b45300;
+}
+
+/* 🕯 Recuerdo (30 de agosto) — oscuro: crepúsculo azul grisáceo, luz de vela */
+html[data-season="memorial"][data-theme="dark"]:not([data-skin="classic"]) {
+  --surface: #0f1219; --on-surface: #e6e9f2; --on-surface-variant: #b3bacb;
+  --surface-container-lowest: #0a0d13; --surface-container-low: #151a24; --surface-container: #1a2030;
+  --surface-container-high: #232a3c; --surface-container-highest: #2d3548;
+  --primary: #aebfe8; --on-primary: #14213f; --primary-container: #2f3d63; --on-primary-container: #d9e2ff;
+  --secondary: #c9b8d9; --on-secondary: #2c1f3b; --secondary-container: #443856; --on-secondary-container: #ecdcfa;
+  --tertiary: #e8d9a8; --on-tertiary: #352d0e; --tertiary-container: #4e4524; --on-tertiary-container: #f7ecc3;
+  --outline: #8790a6; --outline-variant: #3a4257;
+}
+/* 🕯 Recuerdo — claro: neblina gris azulada */
+html[data-season="memorial"][data-theme="light"]:not([data-skin="classic"]) {
+  --surface: #f4f5f9; --on-surface: #1b2030; --on-surface-variant: #4c5470;
+  --surface-container-lowest: #ffffff; --surface-container-low: #eceef5; --surface-container: #e4e7f0;
+  --surface-container-high: #dbdfeb; --surface-container-highest: #d1d6e5;
+  --primary: #3f5086; --on-primary: #ffffff; --primary-container: #dbe2ff; --on-primary-container: #0b1a43;
+  --secondary: #6a5683; --on-secondary: #ffffff; --secondary-container: #ecdcfa; --on-secondary-container: #251838;
+  --tertiary: #6c5a1a; --on-tertiary: #ffffff; --tertiary-container: #f7ecc3; --on-tertiary-container: #231b00;
+  --outline: #7a8199; --outline-variant: #cfd4e3;
+}
+/* el gato del inicio, un poco más apagado y sin brillos */
+html[data-season="memorial"]:not([data-skin="classic"]) .hero-art svg { filter: saturate(0.7) brightness(0.94); }
+
+/* ---------- La versión clásica nunca ve la decoración ---------- */
+html[data-skin="classic"] #season-fx,
+html[data-skin="classic"] #season-top,
+html[data-skin="classic"] .season-hero,
+html[data-skin="classic"] .season-paws,
+html[data-skin="classic"] .season-chip,
+html[data-skin="classic"] .lights,
+html[data-skin="classic"] .season-banner,
+html[data-skin="classic"] .season-switch,
+html[data-skin="classic"] .confetti-canvas { display: none !important; }
+
+/* ---------- Gorros del gato ---------- */
+.hat { display: none; }
+html[data-season="halloween"]:not([data-skin="classic"]) .hat-halloween,
+html[data-season="xmas"]:not([data-skin="classic"]) .hat-xmas,
+html[data-season="birthday"]:not([data-skin="classic"]) .hat-birthday,
+html[data-season="anniversary"]:not([data-skin="classic"]) .hat-birthday,
+html[data-season="valentine"]:not([data-skin="classic"]) .hat-valentine,
+html[data-season="pride"]:not([data-skin="classic"]) .hat-pride,
+html[data-season="newyear"]:not([data-skin="classic"]) .hat-newyear,
+html[data-season="launch"]:not([data-skin="classic"]) .hat-newyear,
+html[data-season="catday"]:not([data-skin="classic"]) .hat-catday { display: block; }
+
+/* ---------- Inicio: huellitas y chip de temporada ---------- */
+.season-paws, .season-chip { display: none; }
+html[data-season]:not([data-skin="classic"]) .paws:not(.season-paws) { display: none; }
+html[data-season]:not([data-skin="classic"]) .season-paws { display: block; }
+html[data-season]:not([data-skin="classic"]) .hero-copy > .chip:not(.season-chip) { display: none; }
+html[data-season]:not([data-skin="classic"]) .hero-copy > .season-chip { display: inline-flex; }
+.season-paws .icon { opacity: 0.3; animation-duration: 6s; }
+.season-paws .icon:nth-child(odd) { color: var(--primary); }
+.season-paws .icon:nth-child(even) { color: var(--tertiary); }
+.season-paws .icon:nth-child(3n) { color: var(--secondary); }
+
+/* ---------- Capas de efectos ---------- */
+#season-fx { position: fixed; inset: 0; z-index: 44; pointer-events: none; overflow: hidden; }
+#season-top { position: fixed; left: 0; right: 0; top: 0; height: 0; z-index: 55; pointer-events: none; }
+
+/* 🎃 murciélagos que cruzan la pantalla */
+.bat {
+  position: absolute; top: var(--y); left: -80px; width: var(--s); height: var(--s);
+  color: var(--bat); opacity: 0.8;
+  animation: bat-fly var(--t) linear var(--d) infinite;
+}
+.bat svg { width: 100%; height: 100%; animation: flap 0.28s ease-in-out infinite alternate; transform-origin: center; }
+@keyframes bat-fly {
+  0% { transform: translate(0, 0) rotate(-5deg); }
+  20% { transform: translate(28vw, -34px) rotate(4deg); }
+  45% { transform: translate(54vw, 26px) rotate(-6deg); }
+  70% { transform: translate(82vw, -28px) rotate(5deg); }
+  100% { transform: translate(120vw, 18px) rotate(-3deg); }
+}
+@keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(0.5); } }
+
+/* 🎃 arañitas colgando de la barra superior */
+.spider {
+  position: absolute; top: 0; left: var(--x); width: 30px; height: var(--len);
+  transform-origin: top center; animation: dangle var(--t, 4.5s) ease-in-out infinite;
+}
+.spider::before {
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 20px; width: 1.5px; margin-left: -0.75px;
+  background: var(--on-surface-variant); opacity: 0.75;
+}
+.spider svg { position: absolute; left: 0; bottom: 0; width: 30px; height: 30px; color: var(--on-surface); }
+@keyframes dangle {
+  0%, 100% { transform: translateY(-10px) rotate(-5deg); }
+  50% { transform: translateY(10px) rotate(5deg); }
+}
+
+/* 🎃 telarañas y niebla en el inicio */
+.season-hero { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.season-hero .web { position: absolute; top: 0; width: min(34vw, 300px); aspect-ratio: 1; color: var(--web); opacity: 0.6; }
+.season-hero .web.l { left: 0; }
+.season-hero .web.r { right: 0; transform: scaleX(-1); }
+.season-hero .web svg { width: 100%; height: 100%; }
+.season-hero .web { -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 98%); mask-image: linear-gradient(to bottom, #000 40%, transparent 98%); }
+.season-hero .fog {
+  position: absolute; left: -20%; right: -20%; bottom: -12%; height: 46%;
+  background: radial-gradient(closest-side, var(--secondary-container), transparent);
+  opacity: 0.55; filter: blur(26px); animation: fog 18s ease-in-out infinite alternate;
+}
+.season-hero .fog.b { background: radial-gradient(closest-side, var(--tertiary-container), transparent); opacity: 0.4; animation-duration: 24s; animation-direction: alternate-reverse; bottom: -20%; }
+@keyframes fog { to { transform: translateX(10%) scale(1.1); } }
+
+/* 🎄 nieve */
+.flake {
+  position: absolute; top: -24px; left: var(--x); width: var(--s); height: var(--s); border-radius: 50%;
+  background: var(--snow, #fff); opacity: var(--o); box-shadow: 0 0 5px rgba(255, 255, 255, 0.55);
+  animation: snow var(--t) linear var(--d) infinite;
+}
+@keyframes snow { to { transform: translate3d(var(--dx), 112vh, 0); } }
+
+/* 🎄 lucecitas colgando bajo la barra superior */
+.lights {
+  position: absolute; left: 0; right: 0; top: 100%; height: 34px; display: flex; justify-content: space-between;
+  padding: 0 10px; pointer-events: none; overflow: hidden;
+}
+.lights::before { content: ""; position: absolute; left: 0; right: 0; top: 3px; height: 2px; background: var(--outline-variant); }
+.lights i {
+  position: relative; margin-top: 4px; width: 10px; height: 16px; border-radius: 50% 50% 50% 50% / 38% 38% 62% 62%;
+  background: var(--c); box-shadow: 0 0 10px 2px var(--c); animation: twinkle 2.4s ease-in-out infinite; animation-delay: var(--d);
+}
+.lights i::before { content: ""; position: absolute; left: 2px; top: -4px; width: 6px; height: 5px; border-radius: 1px; background: var(--outline); }
+@keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* 🎄 nieve acumulada sobre el pie de página */
+html[data-season="xmas"]:not([data-skin="classic"]) .footer { position: relative; }
+html[data-season="xmas"]:not([data-skin="classic"]) .footer::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -13px; height: 28px; pointer-events: none;
+  background: radial-gradient(circle at 14px 14px, var(--snow-cap) 13px, transparent 14px) 0 0 / 28px 28px repeat-x;
+}
+
+/* 🎂 globos que suben */
+.balloon {
+  position: absolute; bottom: -90px; left: var(--x); width: var(--s); color: var(--c);
+  animation: balloon-up var(--t) ease-in var(--d) infinite;
+}
+.balloon svg { width: 100%; height: auto; animation: sway 3.4s ease-in-out infinite alternate; transform-origin: bottom center; opacity: 0.85; }
+@keyframes balloon-up { 0% { transform: translateY(0); } 100% { transform: translateY(-125vh); } }
+@keyframes sway { from { transform: rotate(-7deg); } to { transform: rotate(7deg); } }
+
+/* 💘 / 🏳️‍🌈 corazones que suben */
+.heartfly {
+  position: absolute; bottom: -50px; left: var(--x); width: var(--s); height: var(--s); color: var(--c); opacity: 0.75;
+  animation: balloon-up var(--t) ease-in var(--d) infinite;
+}
+.heartfly svg { width: 100%; height: 100%; animation: sway 3s ease-in-out infinite alternate; transform-origin: bottom center; }
+
+/* 🏳️‍🌈 franja de arcoíris en el borde superior */
+html[data-season="pride"] #season-top::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px;
+  background: linear-gradient(90deg, #e40303 0 16.66%, #ff8c00 0 33.33%, #ffed00 0 50%, #008026 0 66.66%, #24a0ff 0 83.33%, #a742c9 0);
+}
+
+/* ✨ destellos de Año Nuevo */
+.spark {
+  position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s); color: var(--c);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  background: currentColor; opacity: 0.2; animation: spark 2.6s ease-in-out infinite; animation-delay: var(--d);
+}
+@keyframes spark { 0%, 100% { opacity: 0.15; transform: scale(0.6) rotate(0); } 50% { opacity: 0.95; transform: scale(1) rotate(45deg); } }
+
+/* 🕯 luciérnagas: luces pequeñas que suben despacio */
+.firefly {
+  position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s); border-radius: 50%;
+  background: var(--tertiary); box-shadow: 0 0 10px 3px var(--tertiary); opacity: 0;
+  animation: firefly var(--t) ease-in-out var(--d) infinite;
+}
+@keyframes firefly {
+  0% { opacity: 0; transform: translate(0, 0); }
+  30% { opacity: 0.85; }
+  60% { opacity: 0.45; transform: translate(var(--dx), -40px); }
+  100% { opacity: 0; transform: translate(calc(var(--dx) * 1.4), -100px); }
+}
+
+/* 👑 peces que cruzan la pantalla */
+.fish {
+  position: absolute; top: var(--y); left: -80px; width: var(--s); height: var(--s); color: var(--bat); opacity: 0.8;
+  animation: bat-fly var(--t) linear var(--d) infinite;
+}
+.fish svg { width: 100%; height: 100%; }
+
+/* 🎂 confeti (canvas) y título que brilla */
+.confetti-canvas { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
+html[data-season="pride"]:not([data-skin="classic"]) .hero-copy h1 em {
+  background: linear-gradient(90deg, #e40303, #ff8c00, #ffed00, #008026, #24a0ff, #a742c9, #e40303);
+  background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shine 8s linear infinite;
+}
+html[data-season="birthday"]:not([data-skin="classic"]) .hero-copy h1 em,
+html[data-season="anniversary"]:not([data-skin="classic"]) .hero-copy h1 em,
+html[data-season="valentine"]:not([data-skin="classic"]) .hero-copy h1 em,
+html[data-season="newyear"]:not([data-skin="classic"]) .hero-copy h1 em,
+html[data-season="launch"]:not([data-skin="classic"]) .hero-copy h1 em,
+html[data-season="catday"]:not([data-skin="classic"]) .hero-copy h1 em {
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--tertiary), var(--primary));
+  background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shine 6s linear infinite;
+}
+@keyframes shine { to { background-position: 300% 0; } }
+
+/* ---------- Aviso de temporada ---------- */
+.season-banner {
+  position: fixed; top: 76px; left: 50%; z-index: 80; width: min(580px, calc(100% - 24px));
+  display: flex; align-items: center; gap: 14px; padding: 14px 10px 14px 16px;
+  background: var(--surface-container-high); color: var(--on-surface); border-radius: var(--r-xl); box-shadow: var(--shadow-3);
+  transform: translate(-50%, -160%); opacity: 0; transition: transform 0.6s var(--ease-spring), opacity 0.3s;
+}
+.season-banner.show { transform: translate(-50%, 0); opacity: 1; }
+.sb-ico {
+  flex: none; width: 46px; height: 46px; border-radius: var(--r-lg); display: grid; place-items: center;
+  background: var(--primary-container); color: var(--on-primary-container);
+}
+.sb-ico svg { width: 28px; height: 28px; }
+.sb-body { min-width: 0; flex: 1; }
+.sb-body strong { display: block; font: 600 1rem/1.3 var(--font-display); }
+.sb-body p { margin-top: 2px; font-size: 0.875rem; color: var(--on-surface-variant); }
+.sb-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.sb-actions .btn { min-height: 34px; padding: 0 16px; }
+@media (max-width: 520px) { .season-banner { top: 70px; align-items: flex-start; } }
+
+/* ---------- Switch de decoración ---------- */
+.season-switch { margin-top: 18px; }
+.season-switch .label { opacity: 0.85; color: var(--on-surface-variant); }
+
+/* 🐕 Día del Perro — oscuro: miel y cielo */
+html[data-season="dogday"][data-theme="dark"]:not([data-skin="classic"]) {
+  --surface: #17130c; --on-surface: #fdf0d8; --on-surface-variant: #dccaa6;
+  --surface-container-lowest: #100d07; --surface-container-low: #1f190f; --surface-container: #272014;
+  --surface-container-high: #332a1b; --surface-container-highest: #403524;
+  --primary: #f0b84a; --on-primary: #3a2700; --primary-container: #6a4800; --on-primary-container: #ffe0a0;
+  --secondary: #7cc4f0; --on-secondary: #002a40; --secondary-container: #0c4a6e; --on-secondary-container: #c4e6ff;
+  --tertiary: #b4d98a; --on-tertiary: #1c3200; --tertiary-container: #36511a; --on-tertiary-container: #d0f5a8;
+  --outline: #a89570; --outline-variant: #4d3f26;
+}
+/* 🐕 Día del Perro — claro: crema, miel y cielo */
+html[data-season="dogday"][data-theme="light"]:not([data-skin="classic"]) {
+  --surface: #fff9ec; --on-surface: #2a1f0a; --on-surface-variant: #5d4c2e;
+  --surface-container-lowest: #ffffff; --surface-container-low: #fff2d6; --surface-container: #fbe9c2;
+  --surface-container-high: #f4deac; --surface-container-highest: #ecd297;
+  --primary: #8f5f00; --on-primary: #ffffff; --primary-container: #ffdea0; --on-primary-container: #2d1c00;
+  --secondary: #0a6a9e; --on-secondary: #ffffff; --secondary-container: #c8e6ff; --on-secondary-container: #001e31;
+  --tertiary: #4a6a1f; --on-tertiary: #ffffff; --tertiary-container: #ccf09f; --on-tertiary-container: #0e2000;
+  --outline: #8a7a58; --outline-variant: #e2d3b0;
+}
+html[data-season="dogday"]:not([data-skin="classic"]) .hero-copy h1 em {
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--tertiary), var(--primary));
+  background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shine 6s linear infinite;
+}
+
+/* ---------- El perro (colores y compañía en San Valentín) ---------- */
+:root { --dog-fur: #e3a640; --dog-dark: #c98a2b; --dog-light: #f8dea6; --dog-line: #4a2c12; --dog-nose: #2b1a12; --dog-eye: #3a2415; --dog-collar: #3b86d8; }
+html[data-season="dogday"]:not([data-skin="classic"]) .hc .hc-tail { animation-duration: 0.9s; }
+html[data-season="dogday"]:not([data-skin="classic"]) .hero-art:hover .hc-tail,
+html[data-season="dogday"]:not([data-skin="classic"]) .is-happy .hc-tail { animation-duration: 0.35s; }
+.hero-art.has-buddy { position: relative; }
+.hero-art.has-buddy > .hc { transition: transform .5s var(--ease-spring); }
+.hero-art.has-buddy > #hero-cat { width: 74%; margin-left: -4%; }
+.hero-art .dog-buddy { position: absolute; right: -2%; bottom: 0; width: 56%; height: auto; pointer-events: none; transform-origin: 50% 100%; }
+html[data-skin="classic"] .dog-buddy { display: none; }
+@keyframes dog-wag { from { transform: rotate(-12deg); } to { transform: rotate(14deg); } }
+html[data-season="dogday"]:not([data-skin="classic"]) .hc .hc-tail, .dog-buddy .hc-tail { animation-name: dog-wag; }

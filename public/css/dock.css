@@ -1,0 +1,140 @@
+/* ==========================================================
+   Copy's Place — Dock fijo + tonos por sección + paleta de la tarjeta «Hoy»
+   Los colores salen SIEMPRE de la paleta activa (Material 3: primario,
+   terciario y secundario), así que cambian con el tema, la temporada y la
+   paleta elegida.
+   ========================================================== */
+
+/* ---------- Dock ---------- */
+.dock {
+  --dk-a: var(--primary); --dk-on: var(--on-primary);
+  position: fixed; z-index: 55; left: 50%; bottom: max(14px, env(safe-area-inset-bottom));
+  display: flex; align-items: center; gap: 4px; max-width: calc(100vw - 20px); padding: 6px;
+  border-radius: var(--r-full); background: var(--surface-container-high); border: 1px solid var(--outline-variant); box-shadow: var(--shadow-3);
+  transform: translate(-50%, 160%); opacity: 0; pointer-events: none;
+  transition: transform 0.6s var(--ease-spring), opacity 0.3s;
+}
+@supports (background: color-mix(in srgb, red, blue)) {
+  .dock { background: color-mix(in srgb, var(--surface-container-high) 86%, transparent); backdrop-filter: blur(18px) saturate(1.4); }
+}
+html.dock-on .dock { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+html.dock-hide .dock { transform: translate(-50%, 160%); opacity: 0; pointer-events: none; }
+.dock[data-tone="t"] { --dk-a: var(--tertiary); --dk-on: var(--on-tertiary); }
+.dock[data-tone="s"] { --dk-a: var(--secondary); --dk-on: var(--on-secondary); }
+
+.dock-track { display: flex; gap: 2px; min-width: 0; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+.dock-track::-webkit-scrollbar { display: none; }
+.dock-item {
+  --a: var(--primary); --c: var(--primary-container); --o: var(--on-primary-container); --on: var(--on-primary);
+  position: relative; flex: none; display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 14px;
+  border-radius: var(--r-full); color: var(--on-surface-variant); text-decoration: none; white-space: nowrap;
+  font: 500 0.875rem/1 var(--font-body); -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.3s, color 0.3s, transform 0.35s var(--ease-spring);
+}
+.dock-item[data-tone="t"] { --a: var(--tertiary); --c: var(--tertiary-container); --o: var(--on-tertiary-container); --on: var(--on-tertiary); }
+.dock-item[data-tone="s"] { --a: var(--secondary); --c: var(--secondary-container); --o: var(--on-secondary-container); --on: var(--on-secondary); }
+.dock-item .icon { width: 22px; height: 22px; flex: none; transition: transform 0.4s var(--ease-spring); }
+.dock-item:hover { background: var(--c); color: var(--o); }
+.dock-item:hover .icon { transform: translateY(-2px) scale(1.1); }
+.dock-item:active { transform: scale(0.94); }
+.dock-item[aria-current="true"] { background: var(--a); color: var(--on); }
+
+/* Móvil: la misma píldora, solo iconos (el nombre de la sección está en el menú de arriba) */
+@media (max-width: 1039px) {
+  .dock { padding: 5px; }
+  .dock-track { max-width: calc(100vw - 32px); }
+  .dock-item { height: 44px; min-width: 44px; padding: 0 10px; gap: 0; justify-content: center; }
+  .dock-item span { display: none; }
+}
+@media (max-width: 400px) { .dock-item { min-width: 40px; height: 40px; padding: 0 8px; } }
+/* mientras el dock está puesto, la mascota camina sobre él y el botón de subir se levanta */
+html.dock-on { --pet-lift: 78px; }
+html.dock-on.dock-hide { --pet-lift: 0px; }
+html.dock-on .fab { bottom: 92px; }
+
+/* Menú de arriba: nombre de la sección actual */
+.brand-txt { display: flex; flex-direction: column; justify-content: center; gap: 3px; min-width: 0; }
+.brand-sec {
+  display: block; max-height: 0; opacity: 0; overflow: hidden; white-space: nowrap;
+  font: 600 0.68rem/1 var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary);
+  transition: max-height 0.4s var(--ease), opacity 0.3s;
+}
+.brand-sec.on { max-height: 1em; opacity: 1; }
+.brand-sec.swap { animation: sec-swap 0.4s var(--ease); }
+@keyframes sec-swap { from { opacity: 0; transform: translateY(6px); } }
+html[data-skin="classic"] .brand-sec { font: 400 0.5rem/1 var(--font-display); letter-spacing: 0.04em; color: var(--tertiary); }
+html[data-skin="classic"] .brand-sec.swap { animation-timing-function: steps(4, end); }
+.has-dock .footer { padding-bottom: 104px; }
+
+/* Clásica: barra de tareas pixel art */
+html[data-skin="classic"] .dock { border-radius: 0; border: 4px solid var(--px-line); background: var(--surface-container); backdrop-filter: none; box-shadow: var(--shadow-3); transition: transform 0.3s steps(5, end), opacity 0.2s steps(2, end); padding: 5px; }
+html[data-skin="classic"] .dock-item { border-radius: 0; border: 3px solid transparent; height: 44px; font: 400 0.55rem/1 var(--font-display); text-transform: uppercase; letter-spacing: 0.03em; transition: none; }
+html[data-skin="classic"] .dock-item:hover { background: var(--surface-container-highest); color: var(--on-surface); border-color: var(--px-line); }
+html[data-skin="classic"] .dock-item:hover .icon { transform: none; }
+html[data-skin="classic"] .dock-item:active { transform: translate(2px, 2px); }
+html[data-skin="classic"] .dock-item[aria-current="true"] { background: var(--primary); color: var(--on-primary); border-color: var(--px-ink); box-shadow: 3px 3px 0 var(--px-ink); }
+
+@media (prefers-reduced-motion: reduce) { .dock, .dock-item, .dock-item span { transition-duration: 0.01ms !important; } }
+
+/* ==========================================================
+   Tonos por sección (solo moderna): cada sección usa un color de la paleta
+   (primario · terciario · secundario) para sus botones, chips y fondo.
+   ========================================================== */
+html:not([data-skin="classic"]) .section { overflow-x: clip; }
+html:not([data-skin="classic"]) .section[data-tone="t"] {
+  --primary: var(--tertiary); --on-primary: var(--on-tertiary); --primary-container: var(--tertiary-container); --on-primary-container: var(--on-tertiary-container);
+}
+html:not([data-skin="classic"]) .section[data-tone="s"] {
+  --primary: var(--secondary); --on-primary: var(--on-secondary); --primary-container: var(--secondary-container); --on-primary-container: var(--on-secondary-container);
+}
+/* mancha de color suave detrás de cada sección */
+html:not([data-skin="classic"]) .section::before {
+  content: ""; position: absolute; z-index: 0; pointer-events: none; width: min(70vw, 560px); aspect-ratio: 1; top: -10%; right: -14%; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--primary-container) 70%, transparent), transparent);
+  opacity: 0.55;
+}
+html:not([data-skin="classic"]) .section:nth-of-type(even)::before { right: auto; left: -16%; top: 20%; }
+html:not([data-skin="classic"]) .section > .container { position: relative; z-index: 1; }
+html:not([data-skin="classic"]) .band { background: linear-gradient(160deg, color-mix(in srgb, var(--primary-container) 38%, var(--surface)), var(--surface-container-low) 70%); }
+html:not([data-skin="classic"]) .overline {
+  padding: 8px 14px 8px 10px; border-radius: var(--r-full); background: var(--primary-container); color: var(--on-primary-container);
+}
+html:not([data-skin="classic"]) .section-head h2::after {
+  content: ""; display: block; width: 56px; height: 5px; margin-top: 14px; border-radius: 5px; background: var(--primary);
+  transform-origin: left; transition: width 0.7s var(--ease-spring);
+}
+html:not([data-skin="classic"]) .section-head.in h2::after, html:not([data-skin="classic"]) .section-head.visible h2::after { width: 96px; }
+html:not([data-skin="classic"]) .section .card { background: color-mix(in srgb, var(--primary-container) 16%, var(--surface-container-low)); }
+html:not([data-skin="classic"]) .band .card, html:not([data-skin="classic"]) .band .project { background: color-mix(in srgb, var(--primary-container) 14%, var(--surface-container-lowest)); }
+html:not([data-skin="classic"]) .section .card.lift:hover, html:not([data-skin="classic"]) .project:hover {
+  box-shadow: var(--shadow-3), 0 0 0 2px color-mix(in srgb, var(--primary) 45%, transparent);
+}
+/* proyectos: cada tarjeta con su color de la paleta */
+html:not([data-skin="classic"]) .grid-projects > .p-wrap:nth-child(3n+2) .project {
+  --primary: var(--tertiary); --on-primary: var(--on-tertiary); --primary-container: var(--tertiary-container); --on-primary-container: var(--on-tertiary-container);
+}
+html:not([data-skin="classic"]) .grid-projects > .p-wrap:nth-child(3n+3) .project {
+  --primary: var(--secondary); --on-primary: var(--on-secondary); --primary-container: var(--secondary-container); --on-primary-container: var(--on-secondary-container);
+}
+html:not([data-skin="classic"]) .empty { background: color-mix(in srgb, var(--primary-container) 22%, var(--surface-container-low)); border-color: color-mix(in srgb, var(--primary) 30%, var(--outline-variant)); }
+
+/* ---------- Fila «Explora»: mismo reparto de colores que las secciones ---------- */
+html:not([data-skin="classic"]) .strip-card[data-t="p"][data-v="solid"] { --sc-bg: var(--primary); --sc-fg: var(--on-primary); }
+html:not([data-skin="classic"]) .strip-card[data-t="p"][data-v="tonal"] { --sc-bg: var(--primary-container); --sc-fg: var(--on-primary-container); }
+html:not([data-skin="classic"]) .strip-card[data-t="t"][data-v="solid"] { --sc-bg: var(--tertiary); --sc-fg: var(--on-tertiary); }
+html:not([data-skin="classic"]) .strip-card[data-t="t"][data-v="tonal"] { --sc-bg: var(--tertiary-container); --sc-fg: var(--on-tertiary-container); }
+html:not([data-skin="classic"]) .strip-card[data-t="s"][data-v="solid"] { --sc-bg: var(--secondary); --sc-fg: var(--on-secondary); }
+html:not([data-skin="classic"]) .strip-card[data-t="s"][data-v="tonal"] { --sc-bg: var(--secondary-container); --sc-fg: var(--on-secondary-container); }
+
+/* ---------- Paleta Material (tarjeta «Hoy») ---------- */
+.mp-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid color-mix(in srgb, var(--hc-fg) 16%, transparent); flex-wrap: wrap; }
+.mp-lab { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hc-mut); }
+.mp-dots { display: flex; gap: 8px; }
+.mp-dot {
+  position: relative; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border-radius: 50%; cursor: pointer;
+  background: var(--c, var(--hc-mut)); border: 0; color: var(--hc-bg); transition: transform 0.35s var(--ease-spring), box-shadow 0.25s;
+}
+.mp-dot:hover { transform: scale(1.14); }
+.mp-dot[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--hc-bg), 0 0 0 4px var(--hc-fg); }
+.mp-dot.auto { background: conic-gradient(var(--primary), var(--tertiary), var(--secondary), var(--primary)); }
+.mp-dot .icon { width: 16px; height: 16px; }

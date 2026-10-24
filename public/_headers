@@ -1,0 +1,38 @@
+# Cabeceras de Cloudflare Pages: seguridad y caché.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-src 'self' https://challenges.cloudflare.com; object-src 'self'; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'
+
+# Los PDF se abren en el visor del navegador: sin la política de arriba
+/assets/books/*
+  ! Content-Security-Policy
+  Cache-Control: public, max-age=3600
+
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.png
+  Cache-Control: public, max-age=604800
+/assets/*.svg
+  Cache-Control: public, max-age=604800
+
+# Código y datos: se revalidan siempre (rápido gracias a ETag) para ver los cambios al instante
+/css/*
+  Cache-Control: public, max-age=0, must-revalidate
+/js/*
+  Cache-Control: public, max-age=0, must-revalidate
+/data/*
+  Cache-Control: public, max-age=0, must-revalidate
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+  Service-Worker-Allowed: /
+
+/admin
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/admin.html
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store

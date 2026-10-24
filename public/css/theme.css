@@ -1,0 +1,138 @@
+/* ==========================================================
+   Copy's Place — Tema (Material Design 3)
+   Aquí viven TODOS los colores. Para cambiar la paleta basta
+   con editar estos valores (modo claro y modo oscuro).
+   ========================================================== */
+
+@font-face {
+  font-family: "Outfit";
+  src: url("../assets/fonts/outfit-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../assets/fonts/roboto-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../assets/fonts/roboto-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* ---- Formas ---- */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-xxl: 48px;
+  --r-full: 999px;
+
+  /* ---- Movimiento (curvas de Material 3) ---- */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decel: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --ease-accel: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---- Modo claro (cálido, crema y naranja) ---- */
+  color-scheme: light;
+  --primary: #9a4500;
+  --on-primary: #ffffff;
+  --primary-container: #ffdcc7;
+  --on-primary-container: #331200;
+
+  --secondary: #765746;
+  --on-secondary: #ffffff;
+  --secondary-container: #ffdcc9;
+  --on-secondary-container: #2b160a;
+
+  --tertiary: #646029;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #ece5a2;
+  --on-tertiary-container: #1e1c00;
+
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+
+  --surface: #fff8f5;
+  --on-surface: #221a15;
+  --on-surface-variant: #52443b;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #fff1e9;
+  --surface-container: #fbebe2;
+  --surface-container-high: #f5e5dc;
+  --surface-container-highest: #efdfd6;
+  --outline: #85736a;
+  --outline-variant: #d8c2b8;
+  --scrim: rgba(0, 0, 0, 0.45);
+
+  --shadow-1: 0 1px 2px rgba(60, 30, 10, 0.18), 0 1px 3px 1px rgba(60, 30, 10, 0.1);
+  --shadow-2: 0 1px 2px rgba(60, 30, 10, 0.2), 0 2px 6px 2px rgba(60, 30, 10, 0.12);
+  --shadow-3: 0 4px 8px 3px rgba(60, 30, 10, 0.14), 0 1px 3px rgba(60, 30, 10, 0.2);
+
+  /* ---- El gato ---- */
+  --cat-fur: #f0994a;
+  --cat-stripe: #c26a22;
+  --cat-ear: #f7bfa0;
+  --cat-muzzle: #ffe8d0;
+  --cat-eye: #fffaf2;
+  --cat-pupil: #2b1b12;
+  --cat-nose: #c2566b;
+  --cat-blush: #ff8f8f;
+  --box: #c9955c;
+  --box-light: #dcae78;
+  --box-dark: #8a5b33;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --primary: #ffb68a;
+  --on-primary: #512300;
+  --primary-container: #743100;
+  --on-primary-container: #ffdcc7;
+
+  --secondary: #e5bfa8;
+  --on-secondary: #432b1b;
+  --secondary-container: #5c4130;
+  --on-secondary-container: #ffdcc9;
+
+  --tertiary: #d0c988;
+  --on-tertiary: #343100;
+  --tertiary-container: #4c4812;
+  --on-tertiary-container: #ece5a2;
+
+  --error: #ffb4ab;
+  --on-error: #690005;
+
+  --surface: #19120d;
+  --on-surface: #f0dfd6;
+  --on-surface-variant: #d8c2b8;
+  --surface-container-lowest: #140d09;
+  --surface-container-low: #221a14;
+  --surface-container: #271e18;
+  --surface-container-high: #322822;
+  --surface-container-highest: #3d322c;
+  --outline: #a08d83;
+  --outline-variant: #52443b;
+  --scrim: rgba(0, 0, 0, 0.6);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px 2px rgba(0, 0, 0, 0.3);
+  --shadow-3: 0 4px 8px 3px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.5);
+
+  --cat-fur: #e8914a;
+  --cat-stripe: #b4601f;
+  --cat-ear: #e9a98b;
+  --cat-muzzle: #f6d9bd;
+  --box: #9a6a3b;
+  --box-light: #b4814d;
+  --box-dark: #5e3d1f;
+}

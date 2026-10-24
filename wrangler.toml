@@ -1,0 +1,17 @@
+# Configuración de Cloudflare Pages para Copy's Place.
+name = "copys-place"
+compatibility_date = "2026-10-01"
+pages_build_output_dir = "public"
+
+# Base de datos D1 (buzón y caricias). Sustituye el database_id por el que te dé
+#   npx wrangler d1 create copys-place
+[[d1_databases]]
+binding = "DB"
+database_name = "copys-place"
+database_id = "PEGA-AQUI-EL-ID"
+
+# Secretos (no van en este archivo; se crean en el panel o con `wrangler pages secret put`):
+#   ADMIN_TOKEN       contraseña para /admin (moderar mensajes)
+#   TURNSTILE_SECRET  clave secreta de Cloudflare Turnstile (opcional, anti-spam)
+#   HASH_SALT         texto cualquiera para anonimizar las IP (opcional)
+# Variable opcional:  AUTO_APPROVE = "1"  publica los mensajes sin revisarlos.

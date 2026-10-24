@@ -1,0 +1,16 @@
+/* ==========================================================
+   Copy's Place — Cat Runner (diálogo y página 404)
+   ========================================================== */
+.game-dialog { width: min(760px, calc(100vw - 24px)); padding: 0; overflow: hidden; }
+.game-bar { display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 20px; background: var(--surface-container); }
+.game-bar h3 { margin: 0; font: 600 1.15rem/1.2 var(--font-display); color: var(--on-surface); }
+.game-keys { margin-left: auto; font-size: 0.8rem; color: var(--on-surface-variant); }
+.game-keys kbd { margin-inline: 2px; }
+.game-stage, .cr-host { padding: 14px; background: var(--surface-container-low); line-height: 0; }
+.cr-canvas { display: block; width: 100%; height: auto; margin-inline: auto; border-radius: var(--r-lg); touch-action: manipulation; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; }
+@media (pointer: coarse) { html[data-skin="classic"] .game-dialog { border: 4px solid var(--px-line); border-radius: 0; box-shadow: var(--shadow-3); }
+html[data-skin="classic"] .game-bar { background: var(--primary); color: var(--on-primary); border-bottom: 4px solid var(--px-ink); }
+html[data-skin="classic"] .game-bar h3 { font: 400 0.7rem/1.4 var(--font-display); color: var(--on-primary); text-transform: uppercase; }
+html[data-skin="classic"] .game-keys { color: var(--on-primary); }
+html[data-skin="classic"] .cr-canvas { border-radius: 0; border: 3px solid var(--px-line); }
+@media (max-width: 600px) { .game-keys { display: none; } .game-dialog { margin: auto; } html[data-skin="classic"] .game-bar h3 { font-size: 0.6rem; } }

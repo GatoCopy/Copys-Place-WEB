@@ -1,0 +1,22 @@
+# Revisa que los scripts no tengan errores de sintaxis en cada push y pull request.
+# El despliegue lo hace Cloudflare Pages solo, al conectar este repositorio (ver README).
+name: Revisión
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Sintaxis de los scripts del sitio
+        run: |
+          for f in public/js/*.js public/data/*.js public/sw.js; do node --check "$f"; done
+      - name: Sintaxis de las funciones de Cloudflare
+        run: |
+          for f in $(find functions -name '*.js'); do node --check --input-type=module < "$f"; done

@@ -1,0 +1,142 @@
+/* ==========================================================
+   Copy's Place — LA MASCOTA (ver js/pet.js)
+   Un gatito fijo en el borde inferior de la pantalla.
+   Poses: sit (sentado) · walk (caminando) · sleep (dormido) · held (en el aire)
+   ========================================================== */
+.pet {
+  --pw: 108px;
+  position: fixed; left: 0; bottom: calc(4px + var(--pet-lift, 0px)); z-index: 38; transition: bottom 0.5s var(--ease, ease); width: var(--pw); height: calc(var(--pw) * 56 / 72);
+  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
+  will-change: transform; outline: none;
+}
+@media (max-width: 640px) { .pet { --pw: 72px; } }
+.pet.dragging { cursor: grabbing; }
+.pet:focus-visible .flip { filter: drop-shadow(0 0 0 var(--primary)) drop-shadow(0 0 3px var(--primary)); }
+@media print { .pet { display: none; } }
+
+.pet .flip { width: 100%; height: 100%; transition: filter 0.2s; }
+.pet svg.vec, .pet svg.px { display: block; width: 100%; height: 100%; overflow: visible; }
+html[data-skin="classic"] .pet svg.vec { display: none; }
+html:not([data-skin="classic"]) .pet svg.px { display: none; }
+
+/* ---------- Colores (usan los del gato del inicio) ---------- */
+.pet .f { fill: var(--cat-fur); }      .pet line.f { stroke: var(--cat-fur); }
+.pet .d { fill: var(--cat-stripe); }   .pet line.d { stroke: var(--cat-stripe); }
+.pet .s { fill: var(--cat-stripe); }   .pet line.s { stroke: var(--cat-stripe); }
+.pet .e { fill: var(--cat-ear); }      .pet line.e { stroke: var(--cat-ear); }
+.pet .m { fill: var(--cat-muzzle); }   .pet line.m { stroke: var(--cat-muzzle); }
+.pet .w { fill: var(--cat-eye); }      .pet line.w { stroke: var(--cat-eye); }
+.pet .p { fill: var(--cat-pupil); }    .pet line.p { stroke: var(--cat-pupil); }
+.pet .t { fill: #ff7a93; }
+.pet .n { fill: var(--cat-nose); }     .pet line.n { stroke: var(--cat-nose); }
+.pet ellipse[class], .pet polygon[class], .pet rect[class] { stroke: none; }
+.pet line { fill: none; }
+/* sombra suave en el suelo (solo versión moderna) */
+html:not([data-skin="classic"]) .pet .flip { filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.18)); }
+
+/* ---------- Qué pose se ve ---------- */
+.pet .v-sit, .pet .v-walk, .pet .v-sleep { display: none; }
+.pet[data-s="sit"] .v-sit, .pet[data-s="fall"] .v-sit { display: block; }
+.pet[data-s="walk"] .v-walk, .pet[data-s="held"] .v-walk { display: block; }
+.pet[data-s="sleep"] .v-sleep { display: block; }
+/* pixel art: dos fotogramas al caminar */
+.pet svg.px .v-walk.wb { visibility: hidden; }
+.pet[data-s="walk"] svg.px .v-walk.wa { animation: px-a 0.4s steps(1) infinite; }
+.pet[data-s="walk"] svg.px .v-walk.wb { animation: px-b 0.4s steps(1) infinite; }
+@keyframes px-a { 0% { visibility: visible; } 50% { visibility: hidden; } }
+@keyframes px-b { 0% { visibility: hidden; } 50% { visibility: visible; } }
+/* en el aire el gato cuelga: cuerpo inclinado (versión pixel: fotograma A) */
+.pet[data-s="held"] .v-walk { transform: rotate(-38deg); transform-box: fill-box; transform-origin: 70% 30%; }
+.pet[data-s="held"] svg.px .v-walk.wb { display: none; }
+.pet[data-s="fall"] .flip { transform-origin: 50% 100%; }
+
+/* ---------- Animaciones del gato vectorial ---------- */
+.pet .eye { transform-box: fill-box; transform-origin: center; animation: pet-blink 5.4s infinite; }
+@keyframes pet-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.08); } }
+.pet svg.vec .v-sit .tail { animation: pet-tail 2.6s ease-in-out infinite alternate; }
+.pet svg.vec .v-walk .tail { animation: pet-tail 0.9s ease-in-out infinite alternate; }
+@keyframes pet-tail { from { transform: rotate(-9deg); } to { transform: rotate(10deg); } }
+.pet svg.vec .leg { transform-box: view-box; transform-origin: 0 0; }
+.pet[data-s="walk"] svg.vec .leg { animation: pet-stride 0.5s ease-in-out infinite alternate; }
+.pet[data-s="walk"] svg.vec .leg.p1 { animation-direction: alternate-reverse; }
+@keyframes pet-stride { from { transform: rotate(-30deg); } to { transform: rotate(30deg); } }
+.pet[data-s="walk"] svg.vec .v-walk { animation: pet-bob 0.25s ease-in-out infinite alternate; }
+@keyframes pet-bob { from { transform: translateY(0); } to { transform: translateY(-1.2px); } }
+.pet[data-s="held"] svg.vec .leg { animation: pet-dangle 0.7s ease-in-out infinite alternate; }
+.pet[data-s="held"] svg.vec .leg.p1 { animation-direction: alternate-reverse; }
+@keyframes pet-dangle { from { transform: rotate(-12deg); } to { transform: rotate(14deg); } }
+.pet[data-s="sleep"] svg.vec { transform-origin: 50% 100%; animation: pet-breathe 3.2s ease-in-out infinite; }
+@keyframes pet-breathe { 50% { transform: scale(1.02, 1.045); } }
+/* acaricias: ronronea (se sacude suavemente) y al aterrizar se aplasta un poco */
+.pet.purr .flip { animation: pet-purr 0.16s linear 8; }
+@keyframes pet-purr { 0%, 100% { translate: 0 0; } 50% { translate: 1.2px 0; } }
+.pet.land .flip { animation: pet-land 0.45s var(--ease-spring, ease-out); }
+@keyframes pet-land { 0% { scale: 1.12 0.82; } 100% { scale: 1 1; } }
+html[data-skin="classic"] .pet.land .flip { animation: pet-land-px 0.3s steps(3); }
+@keyframes pet-land-px { 0% { translate: 0 2px; } 100% { translate: 0 0; } }
+html[data-skin="classic"] .pet.purr .flip { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .pet *, .pet { animation: none !important; }
+}
+
+/* ---------- Accesorios de temporada (vector) ---------- */
+.pet .acc { display: none; }
+.pet .acc * { stroke-linecap: round; }
+html[data-season="halloween"]:not([data-skin="classic"]) .pet .acc-halloween,
+html[data-season="xmas"]:not([data-skin="classic"]) .pet .acc-xmas,
+html[data-season="birthday"]:not([data-skin="classic"]) .pet .acc-birthday,
+html[data-season="anniversary"]:not([data-skin="classic"]) .pet .acc-birthday,
+html[data-season="valentine"]:not([data-skin="classic"]) .pet .acc-valentine,
+html[data-season="pride"]:not([data-skin="classic"]) .pet .acc-pride,
+html[data-season="newyear"]:not([data-skin="classic"]) .pet .acc-newyear,
+html[data-season="launch"]:not([data-skin="classic"]) .pet .acc-newyear,
+html[data-season="catday"]:not([data-skin="classic"]) .pet .acc-catday { display: block; }
+.pet .acc-bob { animation: pet-acc-bob 1.6s ease-in-out infinite alternate; }
+@keyframes pet-acc-bob { to { translate: 0 -1.6px; } }
+
+/* ---------- Globo de texto, corazones y zzz ---------- */
+.pet-bubble {
+  position: absolute; left: 50%; bottom: 100%; margin-bottom: 4px; white-space: nowrap; z-index: 2;
+  transform: translate(calc(-50% + var(--bx, 0px)), 6px) scale(0.9); opacity: 0; pointer-events: none;
+  padding: 6px 12px; border-radius: var(--r-lg, 16px); font: 500 0.8125rem/1.3 var(--font-body, sans-serif);
+  background: var(--inverse-surface, #333); color: var(--inverse-on-surface, #fff); box-shadow: var(--shadow-2, 0 2px 8px rgba(0, 0, 0, 0.25));
+  transition: transform 0.35s var(--ease-spring, ease-out), opacity 0.2s;
+}
+.pet-bubble.show { opacity: 1; transform: translate(calc(-50% + var(--bx, 0px)), 0) scale(1); }
+html[data-skin="classic"] .pet-bubble {
+  border-radius: 0; border: 3px solid var(--px-line, #2d1b4e); background: var(--surface, #fff3e6); color: var(--on-surface, #2d1b4e);
+  box-shadow: 3px 3px 0 var(--px-line, #2d1b4e); transition: none; font-size: 0.75rem;
+}
+
+.pet-heart {
+  position: absolute; left: 50%; top: 10%; width: var(--hs, 16px); height: var(--hs, 16px); margin-left: calc(var(--hs, 16px) / -2);
+  color: var(--primary); pointer-events: none; z-index: 3; animation: pet-heart 1.3s ease-out forwards;
+}
+.pet-heart svg { width: 100%; height: 100%; }
+@keyframes pet-heart {
+  0% { transform: translate(0, 0) scale(0.4); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translate(var(--hx, 0), -64px) scale(1); opacity: 0; }
+}
+html[data-skin="classic"] .pet-heart { animation-timing-function: steps(6); }
+
+.pet-zzz { position: absolute; right: -4px; top: -4px; pointer-events: none; display: none; font: 700 0.9rem/1 var(--font-display, sans-serif); color: var(--on-surface-variant); }
+.pet[data-s="sleep"] .pet-zzz { display: block; }
+.pet-zzz i { position: absolute; left: 0; top: 0; font-style: normal; opacity: 0; animation: pet-z 3s ease-in-out infinite; }
+.pet-zzz i:nth-child(2) { animation-delay: 1s; font-size: 1.1rem; }
+.pet-zzz i:nth-child(3) { animation-delay: 2s; font-size: 1.3rem; }
+@keyframes pet-z { 0% { transform: translate(0, 8px); opacity: 0; } 25% { opacity: 1; } 100% { transform: translate(12px, -22px); opacity: 0; } }
+html[data-skin="classic"] .pet-zzz { font-family: var(--font-display); }
+html[data-skin="classic"] .pet-zzz i { animation-timing-function: steps(5); }
+
+.pet-switch { margin-top: 18px; }
+.pet-switch .label { opacity: 0.85; color: var(--on-surface-variant); }
+.footer .bday { margin-top: 6px; font-size: 0.8125rem; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.footer .bday[hidden] { display: none; }
+.footer .bday .icon { position: static; flex: none; width: 16px; height: 16px; }
+
+/* Día del Perro: la mascota se vuelve golden retriever */
+html[data-season="dogday"]:not([data-skin="classic"]) .pet {
+  --cat-fur: var(--dog-fur); --cat-stripe: var(--dog-dark); --cat-ear: var(--dog-dark); --cat-muzzle: var(--dog-light);
+  --cat-eye: var(--dog-eye); --cat-pupil: #fff; --cat-nose: var(--dog-nose);
+}

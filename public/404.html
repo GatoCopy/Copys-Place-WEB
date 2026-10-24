@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Página no encontrada · Copy's Place</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/game.css">
+  <script>
+    (function () {
+      var t = null; try { t = localStorage.getItem('cp-theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <style>
+    body { margin: 0; min-height: 100svh; display: grid; place-items: center; text-align: center; padding: 24px;
+      background: var(--surface); color: var(--on-surface); font: 400 1.05rem/1.6 var(--font-body); }
+    main { width: 100%; min-width: 0; }
+    h1 { font: 700 clamp(4rem, 18vw, 8rem)/1 var(--font-display); margin: 0; color: var(--primary); }
+    p { color: var(--on-surface-variant); margin: 8px 0 28px; }
+    svg { width: 96px; height: 96px; color: var(--cat-fur); animation: wob 3s ease-in-out infinite; }
+    @keyframes wob { 50% { transform: rotate(-10deg) translateY(-6px); } }
+    a { display: inline-flex; align-items: center; min-height: 56px; padding: 0 32px; border-radius: 999px; font-weight: 500;
+      background: var(--primary); color: var(--on-primary); text-decoration: none; transition: transform .25s var(--ease-spring); }
+    a:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <main>
+    <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8 21L10 6Q10.4 4.8 11.4 5.5L19.5 11.4Q24 10.4 28.5 11.4L36.6 5.5Q37.6 4.8 38 6L40 21Q42 30 36 37Q31 42 24 42Q17 42 12 37Q6 30 8 21ZM14.2 25.5a2.8 3.2 0 1 0 5.6 0a2.8 3.2 0 1 0-5.6 0ZM28.2 25.5a2.8 3.2 0 1 0 5.6 0a2.8 3.2 0 1 0-5.6 0ZM21.6 31.6h4.8l-2.4 2.8Z"/></svg>
+    <h1>404</h1>
+    <p>Esta página se escondió dentro de una caja. No la encuentro por ningún lado.</p>
+    <div class="cr-host" id="cr" style="width:min(640px,92vw);margin:0 auto 28px;border-radius:24px"></div>
+    <a href="/">Volver al inicio</a>
+  </main>
+  <script src="/js/game.js"></script>
+  <script>
+    (function(){ var h=document.getElementById("cr"), hi=0; try{hi=parseInt(localStorage.getItem("cp-runner-hi"),10)||0}catch(e){}
+      if(!window.CatRunner){h.remove();return}
+      var g=window.CatRunner.mount(h,{hi:hi,isOpen:function(){return true},onHi:function(v){try{localStorage.setItem("cp-runner-hi",String(v))}catch(e){}}});
+      g.start(); })();
+  </script>
+</body>
+</html>
