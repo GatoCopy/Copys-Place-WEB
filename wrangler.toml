@@ -4,11 +4,11 @@ compatibility_date = "2026-10-01"
 pages_build_output_dir = "public"
 
 # Base de datos D1 (buzón y caricias). Sustituye el database_id por el que te dé
-#   npx wrangler d1 create copys-place
+#   npx wrangler d1 create copys-place-web
 [[d1_databases]]
 binding = "DB"
-database_name = "copys-place"
-database_id = "PEGA-AQUI-EL-ID"
+database_name = "copys-place-web"
+database_id = "d0763d60-c39b-4f88-bd3f-a5e5f3c4d941"
 
 # Secretos (no van en este archivo; se crean en el panel o con `wrangler pages secret put`):
 #   ADMIN_TOKEN       contraseña para /admin (moderar mensajes)
