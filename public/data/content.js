@@ -277,12 +277,12 @@ window.SITE = {
       icon: "pets",
       category: "Código",
       description: "Esta misma página: HTML, CSS y JavaScript a mano, en Cloudflare, con versión moderna y clásica.",
-      longDescription: "El desarrollo de esta web: una versión moderna (Material Design, temporadas, paletas y mascota) y una clásica en pixel art que nació en Neocities. Es una app instalable (PWA), con juego incluido. El código se publicará pronto en GitHub.",
+      longDescription: "El desarrollo de esta web: una versión moderna (Material Design, temporadas, paletas y mascota) y una clásica en pixel art que nació en Neocities. Es una app instalable (PWA), con juego incluido. El código es abierto y está en GitHub.",
       tags: ["Web", "PWA", "Cloudflare", "Material Design", "Pixel art"],
-      status: "Pronto en GitHub",
+      status: "Código abierto",
       lastUpdated: "Octubre 2026",
       links: [
-        // Cuando exista el repositorio: { label: "Ver en GitHub", url: "https://github.com/GatoCopy/Copys-Place-WEB", icon: "code" },
+        { label: "Ver en GitHub", url: "https://github.com/GatoCopy/Copys-Place-WEB", icon: "code" },
         { label: "Cómo ha cambiado", url: "#ruta", icon: "schedule" }
       ]
     },
