@@ -1,7 +1,7 @@
 -- Base de datos D1 de Copy's Place.
 -- Créala y aplica este archivo (una sola vez):
---   npx wrangler d1 create copys-place
---   npx wrangler d1 execute copys-place --remote --file=schema.sql
+--   npx wrangler d1 create copys-place-web
+--   npx wrangler d1 execute copys-place-web --remote --file=schema.sql
 CREATE TABLE IF NOT EXISTS guestbook (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,
   name        TEXT    NOT NULL,
@@ -17,4 +17,3 @@ CREATE TABLE IF NOT EXISTS counters (
   key   TEXT PRIMARY KEY,
   value INTEGER NOT NULL DEFAULT 0
 );
-
