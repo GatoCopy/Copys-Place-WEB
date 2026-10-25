@@ -298,16 +298,38 @@
   }
 
   /* Contador global de caricias (Cloudflare Pages Function + D1). Si no existe, no pasa nada. */
-  var globalTotal = null, lastSync = 0;
-  function pets(method) {
-    return fetch("/api/pet", { method: method }).then(function (r) { return r.ok ? r.json() : null; })
+  var globalTotal = null, pending = 0, flushT = 0;
+  function pets(method, n) {
+    var opt = { method: method };
+    if (method === "POST") { opt.headers = { "Content-Type": "application/json" }; opt.body = JSON.stringify({ n: n || 1 }); }
+    return fetch("/api/pet", opt).then(function (r) { return r.ok ? r.json() : null; })
       .then(function (d) { return d && d.ok ? d.total : null; }).catch(function () { return null; });
+  }
+  function showTotal() {
+    if (globalTotal == null) return;
+    CP.$$(".t-pets").forEach(function (e) { e.textContent = globalTotal.toLocaleString("es"); if (e.parentNode) e.parentNode.title = "Caricias de todos los visitantes"; });
+    if (el) el.title = "Tus caricias: " + count + " · Del mundo: " + globalTotal;
   }
   function setTotal(t) {
     if (t == null) return;
-    globalTotal = t;
-    if (el) el.title = "Tus caricias: " + count + " · Del mundo: " + t;
+    globalTotal = t + pending;
+    showTotal();
   }
+  /* Las caricias se juntan y se mandan en lote (1,5 s después de la última) para no perder ninguna */
+  function flush(beacon) {
+    clearTimeout(flushT); flushT = 0;
+    if (!pending) return;
+    var n = pending; pending = 0;
+    if (beacon && navigator.sendBeacon) { navigator.sendBeacon("/api/pet", new Blob([JSON.stringify({ n: n })], { type: "application/json" })); return; }
+    pets("POST", n).then(setTotal);
+  }
+  function queue() {
+    pending++;
+    if (globalTotal != null) { globalTotal++; showTotal(); }
+    if (!flushT) flushT = setTimeout(flush, 1500);
+  }
+  window.addEventListener("pagehide", function () { flush(true); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) flush(true); });
   var QUIET = ["Prrr… aquí estoy.", "Hoy me quedo a tu lado.", "Mrrp. Tranquilo, aquí estoy.", "Prrr… 💛"];
   function quiet() { return root.getAttribute("data-season") === "memorial"; }   // 30 de agosto: día tranquilo
   var DOGM = POSES === POSES_DOG;
@@ -317,7 +339,7 @@
     count++;
     CP.store.set("cp-pet-count", String(count)); if (CP.ach) CP.ach.check();
     el.title = "Tus caricias: " + count + (globalTotal != null ? " · Del mundo: " + globalTotal : "");
-    if (Date.now() - lastSync > 4000) { lastSync = Date.now(); pets("POST").then(setTotal); }
+    queue();
     var msg;
     if (quiet()) { setState("sit"); msg = QUIET[Math.floor(Math.random() * QUIET.length)]; }
     else if (state === "sleep") { setState("sit"); msg = "¡Mrrp! Estaba soñando…"; }
@@ -517,7 +539,7 @@
     tick: function () {
       count++;
       CP.store.set("cp-pet-count", String(count)); if (CP.ach) CP.ach.check();
-      if (Date.now() - lastSync > 4000) { lastSync = Date.now(); pets("POST").then(setTotal); }
+      queue();
     },
     total: function () { return globalTotal; }
   };       // por si quieres controlarlo desde otro script

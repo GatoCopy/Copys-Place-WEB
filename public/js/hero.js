@@ -36,7 +36,7 @@
   var cap = cn ? cn.text : "";
   var mine = parseInt(store("cp-pet-count"), 10) || 0;
   var rows = [
-    ["favorite", "Caricias", '<span class="t-pets">' + mine + "</span>", "#inicio"],
+    ["favorite", "Caricias", '<span class="t-pets">…</span>', "#inicio"],
     ["apps", "Proyectos", String(projects.length), "#proyectos"],
     ["campaign", "Novedades", String(news.length), "#novedades"]
   ];
@@ -90,11 +90,12 @@
   tick();
   setInterval(function () { if (heroVisible && !document.hidden) tick(); }, 10000);
 
+  function ownCount() { CP.$$(".t-pets").forEach(function (el) { if (el.textContent === "…") el.textContent = mine; }); }
   fetch("/api/pet").then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
     if (d && d.ok && typeof d.total === "number") {
       CP.$$(".t-pets").forEach(function (el) { el.textContent = d.total.toLocaleString("es"); el.parentNode.title = "Caricias de todos los visitantes"; });
-    }
-  }).catch(function () {});
+    } else ownCount();
+  }).catch(ownCount);
 
   /* ==========================================================
      Fila «Explora»: atajos a las secciones (no repite su contenido)

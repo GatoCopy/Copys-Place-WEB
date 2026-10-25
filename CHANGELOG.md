@@ -1,5 +1,9 @@
 # Historial de cambios — Copy's Place
 
+## v3.4.1 — 24 de octubre de 2026 · Caricias bien contadas
+- El contador global de caricias ya no pierde las caricias rápidas: se juntan y se mandan en lote (máximo 25 por envío) y la tarjeta «Hoy» se actualiza al instante. Antes solo contaba una cada 4 segundos.
+- La tarjeta «Hoy» ya no parpadea entre tu cifra y la del mundo (muestra «…» hasta tener el total).
+
 ## v3.4 — 16 de octubre de 2026 · Lanzamiento público de la V3
 - **Título «Copy's Place V3»** (pestaña, PWA, vista previa) y una insignia V3 en el panel.
 - **Panel lateral:** buscador fijo arriba; pestañas *Más* (juego, instalar, compartir, ajustes y redes al final), *Para ti* (sigue donde lo dejaste —historial local—, últimas novedades, recién actualizado, atajos) y *Tú*. Se quitó la encuesta «Tú decides» y el enlace RSS.
